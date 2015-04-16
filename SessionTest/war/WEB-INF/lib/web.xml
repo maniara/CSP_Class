@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>SessionTest</servlet-name>
+		<servlet-class>kr.ac.shinhan.csp.SessionTestServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SessionTest</servlet-name>
+		<url-pattern>/sessiontest</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Title</servlet-name>
+		<servlet-class>kr.ac.shinhan.csp.MovieTitleServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Title</servlet-name>
+		<url-pattern>/title</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>Theater</servlet-name>
+		<servlet-class>kr.ac.shinhan.csp.MovieTheaterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Theater</servlet-name>
+		<url-pattern>/theater</url-pattern>
+	</servlet-mapping>
+	
+	<session-config>
+	    <session-timeout>15</session-timeout> <!-- 15분을 의미함 -->
+	</session-config>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
