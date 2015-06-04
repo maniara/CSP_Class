@@ -3,9 +3,6 @@ package kr.ac.shinhan.csp;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 import com.google.gson.Gson;
