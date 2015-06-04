@@ -152,6 +152,47 @@ private static PersistenceManagerFactory PMF;
 		return this.getUserAccountObject(Long.parseLong(accountKey));
 	}
 	
+	@POST
+	@Path("/CheckAccount")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response checkAccoount(UserAccount account)
+	{
+		Result result = new Result();
+		result.setFail("Invalid Account");
+		
+		boolean loginSuccess = false;
+
+		PersistenceManager pm = PMF.getPersistenceManager();
+		Query qry = pm.newQuery(UserAccount.class);
+		qry.setFilter("account == accountParam");
+		qry.declareParameters("String accountParam");
+		
+		try{
+			List<UserAccount> userList = (List<UserAccount>) qry.execute(account.getAccount());
+			if(!userList.isEmpty())
+			{
+				loginSuccess = userList.get(0).checkLogin(account.getAccount(), account.getPassword());
+			}
+			
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally{
+			qry.closeAll();
+			pm.close();
+		}
+		
+		if(loginSuccess)
+		{
+			result.setSuccess();
+			result.setMessage("Success");
+		}
+		
+		return Response.ok().entity(result).build();
+	}
+	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
