@@ -15,7 +15,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-public class MyPostClient extends AsyncTask<String, Void, String>{
+public class MyRestClient extends AsyncTask<String, Void, String>{
 	
 	private String serviceRootURL = "http://shcspkdy.appspot.com/service/";
 	
@@ -69,17 +69,18 @@ public class MyPostClient extends AsyncTask<String, Void, String>{
 	@Override
 	protected String doInBackground(String... params) {
 		
-		Log.d("check Json",params[1]);
+		String method = params[0];
+		Log.d("check Json",params[2]);
 		
-		HttpURLConnection conn = getConnection(params[0]);
+		HttpURLConnection conn = getConnection(params[1]);
 		try {
-			conn.setRequestMethod("POST");
+			conn.setRequestMethod(method);
 		} catch (ProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		sendString(conn,params[1]);
+		sendString(conn,params[2]);
 		String rcvJson = receiveString(conn);
 		
 		//Log.d("check receive",rcvJson);

@@ -12,6 +12,8 @@ import kr.ac.shinhan.csp.entity.UserAccount;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.util.Log;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -48,8 +50,8 @@ public class MainActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				String account = loginAccountText.getText().toString();
-				String password = loginPasswordText.getText().toString();
+				login();
+
 			}});
 		
 		signupButton.setOnClickListener(new OnClickListener(){
@@ -83,7 +85,52 @@ public class MainActivity extends ActionBarActivity {
 	
 	private void login()
 	{
-
+		String account = loginAccountText.getText().toString();
+		String password = loginPasswordText.getText().toString();
+		
+		UserAccount ua = new UserAccount(account,password);
+		String json =new Gson().toJson(ua);
+		
+		AsyncTask<String, Void, String> result = new MyRestClient().execute("POST","UserAccount/CheckAccount", json);
+		
+		String resultString = "";
+		try{
+			resultString = result.get();
+		}catch(Exception e){e.printStackTrace();}
+			
+		if(resultString.equals(""))
+			Log.e("result", "not received");
+		else 
+		{
+			Result r = new Gson().fromJson(resultString, Result.class);
+			
+			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+			
+			if(r.isSuccess())
+			{
+				alert.setPositiveButton("»Æ¿Œ", new DialogInterface.OnClickListener() {
+				    @Override
+				    public void onClick(DialogInterface dialog, int which) {
+				    dialog.dismiss();     //¥›±‚
+				    }
+				});
+				alert.setMessage("Login Success");
+				alert.show();
+			}
+			else
+			{
+				alert.setPositiveButton("»Æ¿Œ", new DialogInterface.OnClickListener() {
+				    @Override
+				    public void onClick(DialogInterface dialog, int which) {
+				    dialog.dismiss();     //¥›±‚
+				    }
+				});
+				alert.setMessage(r.getMessage());
+				alert.show();
+			}
+		}
+			
+		
 	}
 	
 	private void signUp()
@@ -95,7 +142,7 @@ public class MainActivity extends ActionBarActivity {
 		UserAccount ua = new UserAccount(account,nickName,password);
 		String json = new Gson().toJson(ua);
 		
-		AsyncTask<String, Void, String> result = new MyPostClient().execute("UserAccount", json);
+		AsyncTask<String, Void, String> result = new MyRestClient().execute("POST","UserAccount", json);
 		
 		String resultString = "";
 		try{

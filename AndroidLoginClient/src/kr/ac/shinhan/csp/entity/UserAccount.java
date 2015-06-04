@@ -16,6 +16,12 @@ public class UserAccount {
 		this.password = password;
 	}
 	
+	public UserAccount(String account, String password)
+	{
+		this.account = account;
+		this.password = password;
+	}
+	
 	public Long getKey()
 	{
 		return this.key;
